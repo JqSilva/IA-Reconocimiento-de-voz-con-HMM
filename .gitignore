@@ -3,3 +3,5 @@ prueba.py
 /git ignore
 test_data.pkl
 /.vscode
+/data/mini_speech_commands_extracted
+
