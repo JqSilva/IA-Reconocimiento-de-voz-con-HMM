@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import confusion_matrix, classification_report, f1_score
 from hmmlearn import hmm
 
-# Función para extraer y normalizar características MFCC del audio de entrada
+# extraer y normalizar caracteristicas MFCC del audio de entrada
 def extract_mfcc(path, num_features=13, nfft=1024):
     rate, sig = wav.read(path)
     mfcc_features = mfcc(sig, rate, numcep=num_features, nfft=nfft)
@@ -16,7 +16,7 @@ def extract_mfcc(path, num_features=13, nfft=1024):
     mfcc_features = scaler.fit_transform(mfcc_features)
     return mfcc_features
 
-# Función para cargar los modelos desde una carpeta específica
+# cargar los modelos desde una carpeta especifica
 def cargar_modelos(config_folder, comandos):
     modelos = {}
     for comando in comandos:
@@ -28,13 +28,13 @@ def cargar_modelos(config_folder, comandos):
             print(f"Advertencia: No se encontró el modelo para '{comando}' en {config_folder}")
     return modelos
 
-# Función para reconocer el comando basado en las características MFCC ya calculadas
+# reconocer el comando basado en  MFCC
 def reconocer_comando_con_caracteristicas(caracteristicas, modelos):
     probabilidades = {comando: modelo.score(caracteristicas) for comando, modelo in modelos.items()}
     comando_reconocido = max(probabilidades, key=probabilidades.get)
     return comando_reconocido
 
-# Función para evaluar el sistema con el conjunto de prueba desde test_data.pkl
+#  evaluar el sistema con el conjunto de prueba desde test_data.pkl
 def evaluar_modelos_con_test_data(test_data, config_folder, comandos, num_features):
     modelos = cargar_modelos(config_folder, comandos)
     y_true = []
@@ -61,7 +61,7 @@ def evaluar_modelos_con_test_data(test_data, config_folder, comandos, num_featur
     f1_avg = f1_score(y_true, y_pred, average='weighted')
     return f1_avg
 
-# Función para evaluar el sistema con archivos de audio en carpetas
+# evaluar el sistema con archivos de audio propios
 def evaluar_modelos(data_directory, config_folder, comandos, num_features):
     modelos = cargar_modelos(config_folder, comandos)
     y_true = []
@@ -83,7 +83,7 @@ def evaluar_modelos(data_directory, config_folder, comandos, num_features):
     f1_avg = f1_score(y_true, y_pred, average='weighted')
     return f1_avg
 
-# Función para detectar todas las configuraciones en el directorio "models"
+# detectar todas las configuraciones en el directorio "models"
 def obtener_configuraciones():
     configuraciones = []
     model_dir = './models'
@@ -103,7 +103,7 @@ def obtener_configuraciones():
             configuraciones.append(config)
     return configuraciones
 
-# Función para cargar y evaluar las configuraciones
+#  cargar y evaluar las configuraciones
 def evaluacion(data_directory, opcion=1):
     configuraciones = obtener_configuraciones()
     mejores_resultados = []
@@ -131,9 +131,9 @@ def evaluacion(data_directory, opcion=1):
     mejor_config = max(mejores_resultados, key=lambda x: x[1])
     print(f"\nMejor configuración: {mejor_config[0]} con un F1-Score promedio de {mejor_config[1]:.4f}")
 
-# Lista de comandos y ruta de datos
+# Lista de comandos
 comandos = ['yes', 'no', 'up', 'down', 'left', 'right', 'stop']
 data_directory = './data/Audios'
 
-# Ejecutar la evaluación
+# Ejecutar la evaluacion
 evaluacion(data_directory)
